@@ -1,4 +1,4 @@
-// vim: ts=4:sts=4:et
+// vim: ts=2:sts=2:et
 //
 #include <stdint.h>
 #include <new>
@@ -119,46 +119,47 @@ struct alignas(128) MyAlignedC {
 const constexpr auto add_one = STATIC_LAMBDA(auto x) { return x + 1; };
 
 int main(int argc, const char* argv[]) {
-    printf("got %d args:\n", argc);
+  printf("got %d args:\n", argc);
+
 	for (int i = 0; i < argc; ++i)
-		printf("%d: {%s}\n", i, argv[i]);
+	  printf("%d: {%s}\n", i, argv[i]);
 
 
-    char data[1024];
-    Pkt *pkt = new (data) Pkt("sup", "gonna be long");
+  char data[1024];
+  Pkt *pkt = new (data) Pkt("sup", "gonna be long");
 
 	puts("receiving packet");
 	recv(*pkt);
 
-    puts("test strings");
-    String<64> s("this is a string");
-    puts("string:");
-    s.print();
-    puts("done");
+  puts("test strings");
+  String<64> s("this is a string");
+  puts("string:");
+  s.print();
+  puts("done");
 
-    handle<3,7>("This is a very long string");
+  handle<3,7>("This is a very long string");
 
-    int x = add_one(5);
-    printf("x = add_one(5) = %d, sizeof(add_one) = %lu\n", x, sizeof(add_one));
+  int x = add_one(5);
+  printf("x = add_one(5) = %d, sizeof(add_one) = %lu\n", x, sizeof(add_one));
 
-    if (argc > 1) parsefix(argv[1]);
-
-
-    {
-        MyAlignedC a;
-        char somedata[256];
-        MyAlignedC *b = new MyAlignedC();
-        auto test = reinterpret_cast<size_t>(b) % alignof(MyAlignedC);
-        MyAlignedC *c = (MyAlignedC*)&somedata[3];
+  if (argc > 1) parsefix(argv[1]);
 
 
-        printf("max align allowed: %lu\n", alignof(std::max_align_t));
-        printf("sizeof(MyAlignedC): %lu, a:%p b:%p => %lu c_:%p => c (c_+3):%p\n",
-               sizeof(MyAlignedC), (void*)&a, (void*)b, test, (void*)&somedata[0], (void*)c);
+  {
+    MyAlignedC a;
+    char somedata[256];
+    MyAlignedC *b = new MyAlignedC();
+    auto test = reinterpret_cast<size_t>(b) % alignof(MyAlignedC);
+    MyAlignedC *c = (MyAlignedC*)&somedata[3];
 
-        delete b;
-    }
 
-    return 0;
+    printf("max align allowed: %lu\n", alignof(std::max_align_t));
+    printf("sizeof(MyAlignedC): %lu, a:%p b:%p => %lu c_:%p => c (c_+3):%p\n",
+           sizeof(MyAlignedC), (void*)&a, (void*)b, test, (void*)&somedata[0], (void*)c);
+
+    delete b;
+  }
+
+  return 0;
 }
 

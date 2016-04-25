@@ -1,7 +1,7 @@
 # -*- indent-tabs-mode: nil; -*-
 # vim: ts=4:sts=4:sw=4:et
 
-set(LIBS rns)
+set(LIBS rns rt zmq pthread)
 
 file(GLOB SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 set(BINARIES)
